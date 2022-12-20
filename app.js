@@ -23,6 +23,7 @@ function addToResultDiv(element) {
 form.onsubmit = (event) => {
     event.preventDefault();
     clearResultDiv();
+    displayResultTitle();
     // Client-side form validation
     if (isValidEntry()) {
         submitSearch();
@@ -43,8 +44,8 @@ function submitSearch() {
         .then(response => response.text())
         .then(data => {
             if (data) {
-                let superherophp = JSON.parse(data);
-                handleData(superherophp);
+                let superheroInfo = JSON.parse(data);
+                handleData(superheroInfo);
             }
         })
         .catch(error => {
@@ -119,6 +120,13 @@ function displayunFoundMessage(arrMsg) {
     displayedMessage.innerText = msg;
     displayedMessage.classList.add("unfound"); // For Styling
     addToResultDiv(displayedMessage);
+}
+
+function displayResultTitle() {
+    let title = document.createElement("h2");
+    title.innerText = "RESULT";
+    title.classList.add("result-title");
+    addToResultDiv(title);
 }
 // End of support for form submission and response management
 
