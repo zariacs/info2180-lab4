@@ -1,20 +1,22 @@
 const form = document.querySelector("form");
-addResultDiv();
+createResultDiv();
+configureInputBorder(); // For styling
 
 // Suport functions re creation and manipulation of result div
-function addResultDiv() {
+function createResultDiv() {
     let result = document.createElement("div");
     result.setAttribute("id", "result");
-    document.body.appendChild(result);
+    let searchBar = document.getElementById("searchbar");
+    searchBar.appendChild(result);
 }
 
 function clearResultDiv() {
-    result = document.getElementById("result");
+    let result = document.getElementById("result");
     result.innerHTML = "";
 }
 
 function addToResultDiv(element) {
-    result = document.getElementById("result");
+    let result = document.getElementById("result");
     result.appendChild(element);
 }
 // End of result div support
@@ -33,14 +35,10 @@ form.onsubmit = (event) => {
 }
 
 function submitSearch() {
-    fetch('http://localhost/Projects/info2180-lab4/superheroes.php', {
+    fetch('http://localhost/info2180-lab4/superheroes.php', {
         method: "POST",
         body: new FormData(form)
     })
-        // I would replace the above URL with 'http://localhost/info2180-lab4/superheroes.php'
-        // if my info2180-lab4 folder were directly within my htdocs folder.
-        // My URL is http://localhost/Projects/info2180-lab4/superheroes.php
-        // It will be changed prior to git push
         .then(response => response.text())
         .then(data => {
             if (data) {
@@ -113,7 +111,7 @@ function displayHeroList(hList) {
 }
 
 function displayunFoundMessage(arrMsg) {
-    // Pulls unfound message from array sent from superheroes.php
+    // Pulls "unfound message" from array sent from superheroes.php
     let msg = Object.values(arrMsg)[0];
 
     let displayedMessage = document.createElement("h4");
@@ -123,12 +121,27 @@ function displayunFoundMessage(arrMsg) {
 }
 
 function displayResultTitle() {
+    let line = document.createElement("hr");
+    line.classList.add("result-line");
+    addToResultDiv(line);
+
     let title = document.createElement("h2");
     title.innerText = "RESULT";
     title.classList.add("result-title");
     addToResultDiv(title);
+
+    let line2 = document.createElement("hr");
+    line2.classList.add("result-line");
+    addToResultDiv(line2);
+}
+
+function configureInputBorder() {
+    // Styling
+    let field = document.querySelector("input");
+    field.onchange = function (element) {
+        if (field.value != '') {
+            element.target.style.border = "2px solid #ffafcc";
+        }
+    }
 }
 // End of support for form submission and response management
-
-
-
